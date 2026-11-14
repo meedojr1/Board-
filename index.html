@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>السبورة التعليمية الذكية التفاعلية - منصة التدريس الرقمية</title>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  
+  <!-- KaTeX for STEM & Math Equations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.js"></script>
+  
+  <!-- PDF.js for Multi-page PDF Rendering -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  
+  <!-- jsPDF for PDF Document Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Application Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/calculator.css">
+  <link rel="stylesheet" href="css/widgets.css">
+</head>
+<body>
+  <div id="app-container">
+    <!-- 1. Top Primary Header Bar -->
+    <header class="top-header-primary">
+      <div id="teacher-header-badge" class="teacher-header-right" title="انقر لتعديل بيانات المعلم">
+        <div class="teacher-avatar-gold">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="teacher-name-label">
+          المعلم: <span id="header-teacher-name">Medo JR 99</span>
+        </div>
+      </div>
+
+      <div class="header-center-title">
+        <span class="sparkle">✦</span>
+        <span>منصة التدريس الرقمية</span>
+        <span class="sparkle">✦</span>
+      </div>
+
+      <div class="teacher-header-left">
+        <div id="teacher-phone-badge-btn" class="teacher-phone-badge" title="انقر لتعديل رقم الهاتف">
+          <i class="fas fa-phone-alt"></i>
+          <span id="header-teacher-phone">01014396559</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. Top Ribbon Navigation Bar with Scroll Arrows -->
+    <nav class="top-ribbon-bar">
+      <!-- Right Brand -->
+      <div class="ribbon-right-brand">
+        <div class="brand-brain-box">
+          <i class="fas fa-brain"></i>
+        </div>
+        <div class="brand-text-block">
+          <span class="brand-title-ar">السبورة التعليمية</span>
+          <span class="brand-sub-ar">الذكية التفاعلية</span>
+        </div>
+      </div>
+
+      <!-- Right Scroll Arrow -->
+      <button id="ribbon-scroll-right" class="ribbon-scroll-arrow" title="تمرير لليمين"><i class="fas fa-chevron-right"></i></button>
+
+      <!-- Ribbon Tabs Scrollable Area -->
+      <div id="ribbon-tabs-scroll-area" class="ribbon-tabs-scroll">
+        <button id="ribbon-lesson-title" class="ribbon-tab-btn" title="انقر لتعديل عنوان الدرس">
+          <span>درس العلوم - فصل افتراضي</span> <i class="fas fa-pencil-alt" style="font-size: 0.72rem;"></i>
+        </button>
+
+        <button id="ribbon-tab-theme" class="ribbon-tab-btn" title="تغيير مظهر السبورة">
+          <i class="fas fa-palette"></i> سبورة خضراء تقليدية <i class="fas fa-chevron-down" style="font-size: 0.68rem;"></i>
+        </button>
+
+        <button id="ribbon-tab-colors-templates" class="ribbon-tab-btn highlight" title="ألوان وقوالب السبورة">
+          <i class="fas fa-sparkles"></i> ألوان وقوالب السبورة
+        </button>
+
+        <button id="ribbon-tab-grid" class="ribbon-tab-btn" title="تخطيط الشبكة والخلفية">
+          <i class="fas fa-th"></i> الشبكة والخلفية <i class="fas fa-chevron-down" style="font-size: 0.68rem;"></i>
+        </button>
+
+        <button id="ribbon-tab-tools" class="ribbon-tab-btn" title="أدوات الفصل">
+          <i class="fas fa-tools"></i> أدوات الفصل <i class="fas fa-chevron-down" style="font-size: 0.68rem;"></i>
+        </button>
+
+        <button id="ribbon-tab-calc" class="ribbon-tab-btn" title="فتح الآلة الحاسبة العلمية Casio">
+          <i class="fas fa-calculator" style="color: #fbbf24;"></i> آلة حاسبة علمية
+        </button>
+
+        <button id="btn-new-lesson" class="ribbon-tab-btn" title="إنشاء درس جديد">
+          <i class="fas fa-plus"></i> درس جديد
+        </button>
+
+        <button id="btn-save-lesson" class="ribbon-tab-btn btn-save-blue" title="حفظ الدرس الحالي">
+          <i class="fas fa-save"></i> حفظ
+        </button>
+
+        <button id="btn-my-lessons" class="ribbon-tab-btn" title="دروسي المحفوظة">
+          <i class="fas fa-folder"></i> الدروس
+        </button>
+
+        <button id="ribbon-tab-subject-switch" class="ribbon-tab-btn active" title="اختيار المادة الدراسية">
+          <i class="fas fa-flask"></i> <span id="current-subject-label">العلوم</span> <i class="fas fa-chevron-down" style="font-size: 0.68rem;"></i>
+        </button>
+
+        <button id="btn-export-print-ribbon" class="ribbon-tab-btn" title="تصدير الحصة أو طباعتها">
+          <i class="fas fa-download"></i> تصدير وطباعة
+        </button>
+
+        <button id="btn-teacher-profile-ribbon" class="ribbon-tab-btn btn-teacher-gold" title="بيانات المعلم">
+          <i class="fas fa-graduation-cap"></i> بيانات المعلم
+        </button>
+
+        <button id="btn-copy-link" class="ribbon-tab-btn" title="نسخ رابط الحصة">
+          <i class="fas fa-share-alt"></i> نسخ الرابط
+        </button>
+      </div>
+
+      <!-- Left Scroll Arrow -->
+      <button id="ribbon-scroll-left" class="ribbon-scroll-arrow" title="تمرير لليسار"><i class="fas fa-chevron-left"></i></button>
+
+      <!-- Fullscreen Toggle Pill Button -->
+      <button id="btn-fullscreen-toggle" class="btn-fullscreen-pill" title="تكبير الشاشة كاملة">
+        <span>شاشة كاملة</span> <i class="fas fa-expand-arrows-alt"></i>
+      </button>
+    </nav>
+
+    <!-- 3. Canvas Viewport -->
+    <main id="canvas-viewport">
+      <canvas id="bg-canvas"></canvas>
+      <canvas id="main-canvas"></canvas>
+      <canvas id="overlay-canvas"></canvas>
+      <canvas id="laser-canvas"></canvas>
+      <div id="objects-container"></div>
+    </main>
+
+    <!-- 4. Bottom Left Recorder & Microphone Controls -->
+    <div class="bottom-left-recorder-dock">
+      <button id="btn-mic-status" class="btn-mic-status" title="تبديل تشغيل/إيقاف الميكروفون">
+        <i class="fas fa-microphone"></i> المايك شغال
+      </button>
+
+      <button id="btn-rec-pill" class="btn-rec-pill" title="تسجيل الحصة فيديو وصوت">
+        <i class="fas fa-video"></i> تسجيل الشاشة + الصوت
+      </button>
+    </div>
+
+    <!-- 5. Bottom Right Page Controls (with Delete Page Button) -->
+    <div class="bottom-page-controls-dock">
+      <button id="btn-add-page-dock" class="btn-add-page-green" title="إضافة صفحة سبورة جديدة">
+        <i class="fas fa-plus"></i> صفحة جديدة
+      </button>
+
+      <button id="btn-page-current-tab" class="btn-page-current-tab">
+        <i class="fas fa-file-alt"></i> صفحة 1
+      </button>
+
+      <button id="btn-delete-current-page" class="btn-delete-page-icon" title="حذف الصفحة الحالية">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+
+      <div class="page-stepper-pill">
+        <button id="btn-prev-page-dock" class="page-step-btn" title="الصفحة السابقة">
+          السابق <i class="fas fa-chevron-right"></i>
+        </button>
+        <span id="current-page-display-stepper">صفحة 1 من 1</span>
+        <button id="btn-next-page-dock" class="page-step-btn" title="الصفحة التالية">
+          <i class="fas fa-chevron-left"></i> التالي
+        </button>
+      </div>
+    </div>
+
+    <!-- 6. Bottom Main Toolbar Container with Scroll Buttons -->
+    <div class="bottom-main-toolbar-container">
+      <button id="dock-scroll-right" class="dock-scroll-btn" title="تمرير لليمين"><i class="fas fa-chevron-right"></i></button>
+
+      <div id="bottom-main-dock-scroll" class="bottom-main-toolbar-dock" style="position:relative;">
+        <div id="toolbar-dock-handle-btn" class="toolbar-dock-handle" title="موضع الشريط - انقر لتغيير">
+          <i class="fas fa-grip-vertical"></i>
+          <span>موضع</span>
+        </div>
+
+        <!-- Toolbar Position Menu (appears above handle) -->
+        <div id="toolbar-position-menu" class="toolbar-position-menu">
+          <button class="toolbar-pos-btn active" data-pos="center"><i class="fas fa-align-center"></i> وسط</button>
+          <button class="toolbar-pos-btn" data-pos="left"><i class="fas fa-align-right"></i> يمين</button>
+          <button class="toolbar-pos-btn" data-pos="right"><i class="fas fa-align-left"></i> يسار</button>
+        </div>
+
+        <button class="toolbar-item-btn active" data-tool="pen" title="قلم الكتابة والرسم">
+          <i class="fas fa-pen"></i>
+          <span>قلم</span>
+        </button>
+
+        <button class="toolbar-item-btn" data-tool="highlighter" title="قلم التظليل الفوسفوري">
+          <i class="fas fa-highlighter"></i>
+          <span>تظليل</span>
+        </button>
+
+        <button class="toolbar-item-btn" data-tool="eraser" title="الممحاة">
+          <i class="fas fa-eraser"></i>
+          <span>ممحاة</span>
+        </button>
+
+        <button class="toolbar-item-btn" data-tool="laser" title="مؤشر الليزر المتوهج">
+          <i class="fas fa-bullseye"></i>
+          <span>ليزر</span>
+        </button>
+
+        <button id="btn-shape-dock" class="toolbar-item-btn" title="الأشكال الهندسية">
+          <i class="fas fa-play" style="transform: rotate(-90deg);"></i>
+          <span>أشكال ⌃</span>
+        </button>
+
+        <button id="btn-text-dock" class="toolbar-item-btn" data-tool="text" title="إدراج وكتابة نص">
+          <i class="fas fa-font"></i>
+          <span>نص</span>
+        </button>
+
+        <button id="btn-sticky-dock" class="toolbar-item-btn" title="ملاحظة لاصقة">
+          <i class="fas fa-sticky-note"></i>
+          <span>ملاحظة</span>
+        </button>
+
+        <button id="btn-upload-dock" class="toolbar-item-btn" title="إدراج صورة أو ملف PDF">
+          <i class="fas fa-upload"></i>
+          <span>صورة/PDF</span>
+        </button>
+        <input type="file" id="file-upload-input" accept="image/*,application/pdf" style="display: none;" />
+
+        <button id="btn-ruler-dock" class="toolbar-item-btn" title="أدوات القياس الهندسية (مسطرة ومنقلة)">
+          <i class="fas fa-ruler-combined"></i>
+          <span>قياس ˅</span>
+        </button>
+
+        <button id="btn-select-dock" class="toolbar-item-btn" data-tool="select" title="تحديد ونقل العناصر">
+          <i class="fas fa-mouse-pointer"></i>
+          <span>تحديد</span>
+        </button>
+
+        <button class="toolbar-item-btn" data-tool="pan" title="تحريك السبورة">
+          <i class="fas fa-hand-paper"></i>
+          <span>تحريك</span>
+        </button>
+
+        <div class="toolbar-divider-v"></div>
+
+        <button id="btn-color-dock" class="color-picker-dock-btn" title="لوحة الألوان وسُمك الخط">
+          <div id="active-color-dot" class="color-dot-indicator"></div>
+          <span>اللون ⌃</span>
+        </button>
+
+        <div class="toolbar-divider-v"></div>
+
+        <button id="btn-trash-dock" class="toolbar-item-btn" style="color: #fb7185;" title="مسح محتويات الصفحة">
+          <i class="fas fa-trash-alt"></i>
+          <span>مسح</span>
+        </button>
+
+        <button id="btn-undo-dock" class="toolbar-item-btn" title="تراجع">
+          <i class="fas fa-undo"></i>
+          <span>تراجع</span>
+        </button>
+
+        <button id="btn-redo-dock" class="toolbar-item-btn" title="إعادة">
+          <i class="fas fa-redo"></i>
+          <span>إعادة</span>
+        </button>
+
+        <div class="toolbar-divider-v"></div>
+
+        <button id="btn-zoom-out-dock" class="toolbar-item-btn" title="تصغير">
+          <i class="fas fa-search-minus"></i>
+        </button>
+        <button id="btn-zoom-reset-dock" class="toolbar-item-btn" title="إعادة ضبط الزووم 100%">
+          <span id="zoom-percentage-dock">100%</span>
+        </button>
+        <button id="btn-zoom-in-dock" class="toolbar-item-btn" title="تكبير">
+          <i class="fas fa-search-plus"></i>
+        </button>
+
+        <div class="subject-quick-dock">
+          <button id="quick-math-btn" class="subject-quick-btn math" title="معادلات الرياضيات">
+            <i class="fas fa-square-root-alt"></i> رياضيات
+          </button>
+          <button id="quick-chem-btn" class="subject-quick-btn chem" title="معادلات ومركبات الكيمياء">
+            <i class="fas fa-atom"></i> كيمياء
+          </button>
+          <button id="quick-text-btn" class="subject-quick-btn text-btn" title="كتابة نص">
+            <i class="fas fa-font"></i> نص
+          </button>
+        </div>
+      </div>
+
+      <button id="dock-scroll-left" class="dock-scroll-btn" title="تمرير لليسار"><i class="fas fa-chevron-left"></i></button>
+    </div>
+
+    <!-- 7. Popups: Color Palette & Stroke Width -->
+    <div id="tool-options-popup">
+      <div style="font-size: 0.82rem; font-weight: 800; color: #38bdf8; margin-bottom: 4px;">لوحة ألوان القلم والكتابة:</div>
+      <div class="color-swatches-grid">
+        <div class="color-swatch-circle active" style="background: #38bdf8;" data-color="#38bdf8"></div>
+        <div class="color-swatch-circle" style="background: #fbbf24;" data-color="#fbbf24"></div>
+        <div class="color-swatch-circle" style="background: #f43f5e;" data-color="#f43f5e"></div>
+        <div class="color-swatch-circle" style="background: #10b981;" data-color="#10b981"></div>
+        <div class="color-swatch-circle" style="background: #ffffff;" data-color="#ffffff"></div>
+        <div class="color-swatch-circle" style="background: #a855f7;" data-color="#a855f7"></div>
+        <div class="color-swatch-circle" style="background: #f97316;" data-color="#f97316"></div>
+        <div class="color-swatch-circle" style="background: #4ade80;" data-color="#4ade80"></div>
+        <div class="color-swatch-circle" style="background: #ec4899;" data-color="#ec4899"></div>
+        <div class="color-swatch-circle" style="background: #60a5fa;" data-color="#60a5fa"></div>
+        <div class="color-swatch-circle" style="background: #fde047;" data-color="#fde047"></div>
+        <div class="color-swatch-circle" style="background: #94a3b8;" data-color="#94a3b8"></div>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+        <span style="font-size: 0.8rem; color: #cbd5e1;">لون مخصص:</span>
+        <input type="color" id="custom-color-picker" value="#38bdf8" style="background: none; border: none; cursor: pointer; width: 32px; height: 32px;" />
+      </div>
+      <div style="font-size: 0.82rem; font-weight: 800; color: #38bdf8; margin-top: 4px;">
+        سُمك الخط: (<span id="stroke-val-label">3px</span>)
+      </div>
+      <input type="range" id="stroke-width-slider" min="1" max="40" value="3" style="accent-color: #38bdf8; cursor: pointer;" />
+    </div>
+
+    <!-- 8. Shapes Drawer (مطابق تماماً للصورة 4 و 5) -->
+    <div id="shapes-popup">
+      <div class="shapes-popup-header">
+        <div class="shapes-popup-title">
+          <i class="far fa-square"></i> اختر الشكل الهندسي للرسم:
+        </div>
+        <button id="close-shapes-popup" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 1rem;">✕</button>
+      </div>
+
+      <div class="shapes-list-vertical">
+        <button class="shape-list-item-btn" data-shape="line">
+          <div class="shape-item-info">
+            <span class="shape-item-title">خط مستقيم</span>
+            <span class="shape-item-desc">رسم خطوط وأوتار دقيقة</span>
+          </div>
+          <div class="shape-item-icon-box"><i class="fas fa-minus"></i></div>
+        </button>
+
+        <button class="shape-list-item-btn" data-shape="arrow">
+          <div class="shape-item-info">
+            <span class="shape-item-title">سهم توجيهي</span>
+            <span class="shape-item-desc">سهم للإشارة والتوجيه</span>
+          </div>
+          <div class="shape-item-icon-box"><i class="fas fa-arrow-up" style="transform: rotate(45deg);"></i></div>
+        </button>
+
+        <button class="shape-list-item-btn" data-shape="rect">
+          <div class="shape-item-info">
+            <span class="shape-item-title">مستطيل / مربع</span>
+            <span class="shape-item-desc">أشكال هندسية رباعية</span>
+          </div>
+          <div class="shape-item-icon-box"><i class="far fa-square"></i></div>
+        </button>
+
+        <button class="shape-list-item-btn" data-shape="circle">
+          <div class="shape-item-info">
+            <span class="shape-item-title">دائرة / بيضاوي</span>
+            <span class="shape-item-desc">دوائر ومسارات بيضاوية</span>
+          </div>
+          <div class="shape-item-icon-box"><i class="far fa-circle"></i></div>
+        </button>
+
+        <button class="shape-list-item-btn active" data-shape="triangle">
+          <div class="shape-item-info">
+            <span class="shape-item-title">مثلث هندسي</span>
+            <span class="shape-item-desc">مثلث بجميع الزوايا</span>
+          </div>
+          <div class="shape-item-icon-box"><i class="fas fa-play" style="transform: rotate(-90deg);"></i></div>
+        </button>
+
+        <button class="shape-list-item-btn" data-shape="hexagon">
+          <div class="shape-item-info">
+            <span class="shape-item-title">مضلع سداسي</span>
+            <span class="shape-item-desc">مضلعات منتظمة</span>
+          </div>
+          <div class="shape-item-icon-box"><i class="fas fa-cube"></i></div>
+        </button>
+
+        <button class="shape-list-item-btn" data-shape="grid">
+          <div class="shape-item-info">
+            <span class="shape-item-title">شبكة محاور إحداثيات</span>
+            <span class="shape-item-desc">محاور X و Y للرسم البياني</span>
+          </div>
+          <div class="shape-item-icon-box"><i class="fas fa-th"></i></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- 9. Geometric Measurement Tools Modal -->
+    <div id="measurement-modal" class="modal-overlay">
+      <div class="measurement-modal-card">
+        <div class="measurement-modal-header">
+          <div class="measurement-modal-title">
+            <i class="fas fa-ruler-combined"></i> أدوات القياس الهندسية
+          </div>
+          <button class="btn-ruler-close btn-modal-cancel" style="color: #94a3b8; font-size: 1.1rem; background: none; border: none; cursor: pointer;">✕</button>
+        </div>
+
+        <div class="measurement-item-card">
+          <div class="measurement-item-info">
+            <span class="measurement-item-title">مسطرة قياس تفاعلية</span>
+            <span class="measurement-item-desc">بالسنتيمتر (cm) مع دوران وسحب</span>
+          </div>
+          <button id="btn-insert-ruler-modal" class="btn-show-measure-tool">إظهار</button>
+        </div>
+
+        <div class="measurement-item-card">
+          <div class="measurement-item-info">
+            <span class="measurement-item-title">منقلة زوايا هندسية</span>
+            <span class="measurement-item-desc">من 0° إلى 180° مع تحريك وتدوير</span>
+          </div>
+          <button id="btn-insert-protractor-modal" class="btn-show-measure-tool">إظهار</button>
+        </div>
+
+        <div class="measurement-modal-footer-note">
+          ✨ يمكنك سحب وتدوير الأدوات على السبورة بحرية
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. Saved Lessons Modal (مطابق تماماً للصورة 4) -->
+    <div id="my-lessons-modal" class="modal-overlay">
+      <div class="lessons-modal-card">
+        <div class="lessons-modal-header">
+          <div class="lessons-header-right">
+            <div class="lessons-folder-icon">
+              <i class="fas fa-folder-open"></i>
+            </div>
+            <div>
+              <div class="lessons-title-text">دروسي المحفوظة</div>
+              <div class="lessons-subtitle-text">إدارة وفتح وتكرار الدروس المسجلة في الذاكرة المحلية</div>
+            </div>
+          </div>
+          <div class="lessons-header-actions">
+            <button id="btn-import-stb-action" class="btn-import-stb" title="استيراد درس من ملف stb.">
+              <i class="fas fa-upload"></i> استيراد stb.
+            </button>
+            <input type="file" id="stb-file-input" accept=".stb,.json" style="display: none;" />
+            <button id="btn-modal-new-lesson" class="btn-new-lesson-blue">
+              <i class="fas fa-plus"></i> درس جديد
+            </button>
+            <button class="btn-icon btn btn-modal-cancel"><i class="fas fa-times"></i></button>
+          </div>
+        </div>
+
+        <!-- Search Input -->
+        <div class="lessons-search-box">
+          <i class="fas fa-search lessons-search-icon"></i>
+          <input type="text" id="lessons-search-input" class="lessons-search-input" placeholder="ابحث باسم الدرس..." />
+        </div>
+
+        <!-- Filter Categories Tabs -->
+        <div class="lessons-filter-tabs">
+          <button class="lesson-filter-btn active" data-subject="all">الكل (<span id="lessons-count-all">0</span>)</button>
+          <button class="lesson-filter-btn" data-subject="العلوم">العلوم 🔬</button>
+          <button class="lesson-filter-btn" data-subject="الكيمياء">الكيمياء 🧪</button>
+          <button class="lesson-filter-btn" data-subject="الفيزياء">الفيزياء ⚛️</button>
+          <button class="lesson-filter-btn" data-subject="الرياضيات">الرياضيات ∑</button>
+          <button class="lesson-filter-btn" data-subject="اللغة العربية">اللغة العربية أ</button>
+        </div>
+
+        <!-- Lessons Content List / Empty State -->
+        <div id="lessons-list-container" class="lessons-content-body">
+          <div class="lessons-empty-state">
+            <i class="far fa-file-alt lessons-empty-icon"></i>
+            <div class="lessons-empty-title">لا توجد دروس محفوظة هنا</div>
+            <div class="lessons-empty-desc">احفظ دروسك أثناء التدريس للرجوع إليها لاحقاً بسهولة</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. Classroom Tools Dropdown Modal -->
+    <div id="classroom-tools-modal" class="modal-overlay">
+      <div class="classroom-tools-modal-card">
+        <div class="modal-header" style="padding: 4px 0 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <div class="modal-title" style="color: #fbbf24;">
+            <i class="fas fa-tools"></i> أدوات الفصل التفاعلية
+          </div>
+          <button class="btn-icon btn btn-modal-cancel"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="tools-grid-cards">
+          <div id="tool-choice-timer" class="classroom-tool-choice-card">
+            <div class="tool-card-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+              <i class="fas fa-stopwatch"></i>
+            </div>
+            <div class="tool-card-title">المؤقت وساعة الإيقاف</div>
+            <div class="tool-card-desc">ضبط أوقات الاختبارات والأنشطة</div>
+          </div>
+
+          <div id="tool-choice-measure" class="classroom-tool-choice-card">
+            <div class="tool-card-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+              <i class="fas fa-ruler-combined"></i>
+            </div>
+            <div class="tool-card-title">المسطرة والمنقلة</div>
+            <div class="tool-card-desc">أدوات القياس الهندسية التفاعلية</div>
+          </div>
+
+          <div id="tool-choice-calc" class="classroom-tool-choice-card">
+            <div class="tool-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+              <i class="fas fa-calculator"></i>
+            </div>
+            <div class="tool-card-title">الآلة الحاسبة Casio</div>
+            <div class="tool-card-desc">حاسبة علمية متطورة fx-991ES</div>
+          </div>
+
+          <div id="tool-choice-stem" class="classroom-tool-choice-card">
+            <div class="tool-card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
+              <i class="fas fa-atom"></i>
+            </div>
+            <div class="tool-card-title">مكتبة STEM للعلوم</div>
+            <div class="tool-card-desc">معادلات ورموز الرياضيات والكيمياء</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12. Subjects Switcher Modal -->
+    <div id="subjects-modal" class="modal-overlay">
+      <div class="classroom-tools-modal-card" style="max-width: 380px;">
+        <div class="modal-header" style="padding: 4px 0 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <div class="modal-title" style="color: #38bdf8;">
+            <i class="fas fa-book-open"></i> اختر المادة الدراسية
+          </div>
+          <button class="btn-icon btn btn-modal-cancel"><i class="fas fa-times"></i></button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+          <button class="btn-subject-item active" data-subject="العلوم" data-icon="fa-flask">
+            <i class="fas fa-flask" style="color: #38bdf8;"></i> العلوم
+          </button>
+          <button class="btn-subject-item" data-subject="الرياضيات" data-icon="fa-square-root-alt">
+            <i class="fas fa-square-root-alt" style="color: #fbbf24;"></i> الرياضيات
+          </button>
+          <button class="btn-subject-item" data-subject="الفيزياء" data-icon="fa-bolt">
+            <i class="fas fa-bolt" style="color: #c084fc;"></i> الفيزياء
+          </button>
+          <button class="btn-subject-item" data-subject="الكيمياء" data-icon="fa-atom">
+            <i class="fas fa-atom" style="color: #34d399;"></i> الكيمياء
+          </button>
+          <button class="btn-subject-item" data-subject="اللغة العربية" data-icon="fa-pen-fancy">
+            <i class="fas fa-pen-fancy" style="color: #f43f5e;"></i> اللغة العربية
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. CASIO fx-991ES PLUS 2nd Edition Calculator Widget -->
+    <div id="calculator-widget" class="floating-widget">
+      <div class="casio-top-bar">
+        <div class="casio-brand-title">
+          <i class="fas fa-calculator" style="color: #38bdf8;"></i>
+          <span>CASIO</span>
+          <span class="casio-model-badge">fx-991ES</span>
+        </div>
+        <div class="casio-window-controls">
+          <button id="casio-insert-board" class="widget-btn" title="إدراج الناتج للسبورة" style="color: #38bdf8;"><i class="fas fa-plus-circle"></i></button>
+          <button id="close-calc-widget" class="widget-btn close-btn"><i class="fas fa-times"></i></button>
+        </div>
+      </div>
+
+      <div class="casio-header-body">
+        <div>
+          <div class="casio-logo-text">CASIO</div>
+          <div class="casio-sublogo">fx-991ES PLUS <span class="casio-edition-tag">2nd edition</span></div>
+        </div>
+        <div class="casio-solar-cell" title="Solar Cell">
+          <div class="casio-solar-line"></div>
+          <div class="casio-solar-line"></div>
+          <div class="casio-solar-line"></div>
+        </div>
+      </div>
+
+      <div class="casio-screen-container">
+        <div class="casio-screen-indicators">
+          <span id="casio-shift-indicator">S</span>
+          <span id="casio-alpha-indicator">A</span>
+          <span>hyp</span>
+          <span id="casio-deg-indicator" style="cursor: pointer; background: rgba(0,0,0,0.15); padding: 0 4px; border-radius: 2px;">DEG</span>
+          <span>Math ▲</span>
+        </div>
+        <div id="casio-expr-display" class="casio-screen-expr"></div>
+        <div class="casio-screen-result-row">
+          <button id="casio-btn-sd" class="casio-btn-sd-screen">S<=>D</button>
+          <div id="casio-result-display" class="casio-screen-result">0</div>
+        </div>
+      </div>
+
+      <div class="casio-control-cluster">
+        <button id="casio-btn-shift" class="casio-top-fn-btn shift">SHIFT</button>
+        <button id="casio-btn-alpha" class="casio-top-fn-btn alpha">ALPHA</button>
+
+        <div class="casio-replay-pad">
+          <i class="fas fa-caret-up casio-replay-arrow up"></i>
+          <i class="fas fa-caret-down casio-replay-arrow down"></i>
+          <i class="fas fa-caret-left casio-replay-arrow left"></i>
+          <i class="fas fa-caret-right casio-replay-arrow right"></i>
+          <span class="casio-replay-label">REPLAY</span>
+        </div>
+
+        <button class="casio-top-fn-btn" data-action="mode">MODE</button>
+        <button class="casio-top-fn-btn" data-action="ac" style="color: #65a30d;">ON</button>
+      </div>
+
+      <div class="casio-scientific-matrix">
+        <button class="casio-sci-btn" data-fn="calc">CALC</button>
+        <button class="casio-sci-btn" data-fn="integral">∫dx</button>
+        <button class="casio-sci-btn" data-fn="fraction">■/□</button>
+        <button class="casio-sci-btn" data-fn="sqrt">√</button>
+        <button class="casio-sci-btn" data-fn="sq">x²</button>
+        <button class="casio-sci-btn" data-val="^">x■</button>
+
+        <button class="casio-sci-btn" data-fn="log">log</button>
+        <button class="casio-sci-btn" data-fn="ln">ln</button>
+        <button class="casio-sci-btn" data-val="-">(-)</button>
+        <button class="casio-sci-btn" data-fn="deg">° ' "</button>
+        <button class="casio-sci-btn" data-fn="hyp">hyp</button>
+        <button class="casio-sci-btn" data-fn="sin">sin</button>
+
+        <button class="casio-sci-btn" data-fn="cos">cos</button>
+        <button class="casio-sci-btn" data-fn="tan">tan</button>
+        <button class="casio-sci-btn" data-fn="rcl">RCL</button>
+        <button class="casio-sci-btn" data-fn="eng">ENG</button>
+        <button class="casio-sci-btn" data-val="(">(</button>
+        <button class="casio-sci-btn" data-val=")">)</button>
+
+        <button class="casio-sci-btn" data-fn="sd">S<=>D</button>
+        <button class="casio-sci-btn" data-fn="mplus">M+</button>
+        <button class="casio-sci-btn" data-fn="pi">π</button>
+        <button class="casio-sci-btn" data-fn="e">e</button>
+        <button class="casio-sci-btn" data-fn="fact">n!</button>
+        <button class="casio-sci-btn" data-val="%">%</button>
+      </div>
+
+      <div class="casio-main-keypad">
+        <button class="casio-key" data-val="7">7</button>
+        <button class="casio-key" data-val="8">8</button>
+        <button class="casio-key" data-val="9">9</button>
+        <button class="casio-key del-ac" data-action="del">DEL</button>
+        <button class="casio-key del-ac" data-action="ac">AC</button>
+
+        <button class="casio-key" data-val="4">4</button>
+        <button class="casio-key" data-val="5">5</button>
+        <button class="casio-key" data-val="6">6</button>
+        <button class="casio-key op" data-val="×">×</button>
+        <button class="casio-key op" data-val="÷">÷</button>
+
+        <button class="casio-key" data-val="1">1</button>
+        <button class="casio-key" data-val="2">2</button>
+        <button class="casio-key" data-val="3">3</button>
+        <button class="casio-key op" data-val="+">+</button>
+        <button class="casio-key op" data-val="-">−</button>
+
+        <button class="casio-key" data-val="0">0</button>
+        <button class="casio-key" data-val=".">.</button>
+        <button class="casio-key" data-val="*10^">×10ˣ</button>
+        <button class="casio-key" data-fn="ans">Ans</button>
+        <button class="casio-key equals" data-action="equals">=</button>
+      </div>
+    </div>
+
+    <!-- 14. Timer & Stopwatch Floating Widget -->
+    <div id="timer-widget" class="floating-widget">
+      <div class="widget-header">
+        <span><i class="fas fa-stopwatch" style="color: #fbbf24;"></i> المؤقت وساعة الإيقاف</span>
+        <div class="widget-controls">
+          <button id="close-timer-widget" class="widget-btn close-btn"><i class="fas fa-times"></i></button>
+        </div>
+      </div>
+      <div class="widget-body">
+        <div id="timer-display" class="timer-display">00:00</div>
+        
+        <div class="timer-inputs">
+          <input type="number" id="timer-min-input" class="timer-input-box" value="5" min="0" max="99" placeholder="دقائق" />
+          <span style="font-weight: 800; font-size: 1.4rem; color: #38bdf8;">:</span>
+          <input type="number" id="timer-sec-input" class="timer-input-box" value="00" min="0" max="59" placeholder="ثواني" />
+        </div>
+
+        <div class="timer-controls" style="margin-top: 8px;">
+          <button id="btn-timer-start" class="btn btn-primary"><i class="fas fa-play"></i> بدء</button>
+          <button id="btn-timer-reset" class="btn"><i class="fas fa-undo"></i> إعادة ضبط</button>
+          <button id="btn-timer-mode" class="btn" style="font-size: 0.8rem;">وضع المؤقت</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 15. Other Modals (Teacher Profile, Backgrounds, Export, PDF, STEM, Clear Confirm) -->
+    <div id="welcome-modal" class="modal-overlay">
+      <div class="teacher-profile-card">
+        <div class="teacher-modal-icon-badge">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+
+        <div class="teacher-modal-title">تعديل بيانات المعلم</div>
+        
+        <div class="teacher-modal-subtitle">
+          ✦ ستظهر بياناتك في الشريط العلوي للسبورة وبداية الحصص ✦
+        </div>
+
+        <div class="teacher-form-group">
+          <label class="teacher-form-label">
+            <i class="fas fa-user-tie" style="color: #fbbf24;"></i> اسم المدرس / المعلم:
+          </label>
+          <input type="text" id="teacher-name-input" class="teacher-input-gold" value="Medo JR 99" />
+        </div>
+
+        <div class="teacher-form-group">
+          <label class="teacher-form-label">
+            <i class="fas fa-phone-alt" style="color: #38bdf8;"></i> رقم التليفون / الواتساب:
+          </label>
+          <input type="tel" id="teacher-phone-input" class="teacher-input-phone" value="01014396559" />
+        </div>
+
+        <div class="teacher-modal-buttons">
+          <button class="btn-cancel-dark btn-modal-cancel">إلغاء</button>
+          <button id="btn-save-teacher" class="btn-save-emerald">
+            <i class="fas fa-check"></i> حفظ التعديلات
+          </button>
+        </div>
+
+        <div class="teacher-modal-credit-badge">
+          إعداد وتطوير Medo JR 99 (01014396559)
+        </div>
+      </div>
+    </div>
+
+    <!-- Background & Patterns Modal -->
+    <div id="bg-modal" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i class="fas fa-palette"></i> ألوان وقوالب وتخطيط السبورة
+          </div>
+          <button class="modal-close btn-icon btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div style="font-size: 0.85rem; font-weight: 800; color: #38bdf8;">السمات وخلفيات السبورة:</div>
+          <div class="bg-selector-grid">
+            <div class="bg-choice-card" data-bg="#134e4a" style="background: #134e4a; color: white;">
+              <i class="fas fa-chalkboard"></i> سبورة خضراء تقليدية
+            </div>
+            <div class="bg-choice-card active" data-bg="#0b132b" style="background: #0b132b; color: white;">
+              <i class="fas fa-moon"></i> سبورة داكنة راقية
+            </div>
+            <div class="bg-choice-card" data-bg="#070d1e" style="background: #070d1e; color: white;">
+              <i class="fas fa-cube"></i> كحلي فضائي غامق
+            </div>
+            <div class="bg-choice-card" data-bg="#ffffff" style="background: #ffffff; color: #1e293b;">
+              <i class="fas fa-square"></i> لوحة بيضاء نقية
+            </div>
+            <div class="bg-choice-card" data-bg="gradient-dark" style="background: linear-gradient(135deg, #070d1e, #0b132b); color: white;">
+              <i class="fas fa-layer-group"></i> تدرج ليلي حديث
+            </div>
+            <div class="bg-choice-card" data-bg="gradient-warm" style="background: linear-gradient(135deg, #fffbeb, #fef3c7); color: #78350f;">
+              <i class="fas fa-sun"></i> ورق كريمي دافئ
+            </div>
+          </div>
+
+          <div style="font-size: 0.85rem; font-weight: 800; color: #38bdf8; margin-top: 10px;">أنماط التسطير والشبكات:</div>
+          <div class="pattern-choice-grid">
+            <div class="pattern-card active" data-pattern="dot-grid">
+              <i class="fas fa-braille"></i> شبكة نقاط رقمية
+            </div>
+            <div class="pattern-card" data-pattern="math-grid">
+              <i class="fas fa-border-all"></i> مربعات رياضيات رسم بياني
+            </div>
+            <div class="pattern-card" data-pattern="arabic-lined">
+              <i class="fas fa-bars"></i> تسطير كشكول عربي
+            </div>
+            <div class="pattern-card" data-pattern="lined">
+              <i class="fas fa-align-justify"></i> أسطر إنجليزية
+            </div>
+            <div class="pattern-card" data-pattern="blank">
+              <i class="fas fa-border-none"></i> بدون تسطير (فارغ)
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary modal-close">تم</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export & Print Modal -->
+    <div id="export-modal" class="modal-overlay">
+      <div class="modal-card" style="max-width: 440px;">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i class="fas fa-download"></i> تصدير وطباعة الحصة
+          </div>
+          <button class="modal-close btn-icon btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" style="gap: 10px;">
+          <button id="btn-export-png-action" class="btn" style="padding: 12px; justify-content: flex-start; gap: 12px; width: 100%;">
+            <i class="fas fa-image" style="color: #fbbf24; font-size: 1.3rem;"></i>
+            <div style="text-align: right;">
+              <div style="font-weight: 800;">حفظ كصورة عالية الدقة (PNG)</div>
+              <div style="font-size: 0.76rem; color: #94a3b8;">مناسبة للمشاركة على واتساب وتيليجرام</div>
+            </div>
+          </button>
+
+          <button id="btn-export-pdf-action" class="btn" style="padding: 12px; justify-content: flex-start; gap: 12px; width: 100%;">
+            <i class="fas fa-file-pdf" style="color: #f43f5e; font-size: 1.3rem;"></i>
+            <div style="text-align: right;">
+              <div style="font-weight: 800;">تصدير كملف PDF متعدد الصفحات</div>
+              <div style="font-size: 0.76rem; color: #94a3b8;">جاهز للطباعة وتوزيع ملخص الدرس</div>
+            </div>
+          </button>
+
+          <button id="btn-print-action" class="btn" style="padding: 12px; justify-content: flex-start; gap: 12px; width: 100%;">
+            <i class="fas fa-print" style="color: #38bdf8; font-size: 1.3rem;"></i>
+            <div style="text-align: right;">
+              <div style="font-weight: 800;">طباعة فورية للحصة</div>
+              <div style="font-size: 0.76rem; color: #94a3b8;">إرسال مباشر إلى الطابعة</div>
+            </div>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-modal-cancel">إغلاق</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PDF Multi-page Modal -->
+    <div id="pdf-modal" class="modal-overlay">
+      <div class="modal-card" style="max-width: 680px;">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i class="fas fa-file-pdf" style="color: #f43f5e;"></i>
+            <span>مستعرض صفحات الـ PDF (<span id="pdf-total-pages-label">0 صفحة</span>)</span>
+          </div>
+          <button class="modal-close btn-icon btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 0.88rem; color: #94a3b8;">
+            انقر على أي صفحة لإدراجها مباشرة على السبورة للشرح والتدوين عليها بحرية.
+          </p>
+          <div id="pdf-thumbnails-grid" class="pdf-thumbnails-grid"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-modal-cancel">إغلاق</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEM Formulas Modal -->
+    <div id="stem-modal" class="modal-overlay">
+      <div class="modal-card" style="max-width: 640px;">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i class="fas fa-atom" style="color: #38bdf8;"></i>
+            <span>مكتبة الرموز والمعادلات العلمية (STEM)</span>
+          </div>
+          <button class="modal-close btn-icon btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="stem-tabs">
+            <button class="stem-tab-btn active" data-tab="math"><i class="fas fa-square-root-alt"></i> رياضيات</button>
+            <button class="stem-tab-btn" data-tab="physics"><i class="fas fa-bolt"></i> فيزياء</button>
+            <button class="stem-tab-btn" data-tab="chemistry"><i class="fas fa-flask"></i> كيمياء</button>
+          </div>
+
+          <div id="stem-items-grid" class="stem-items-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; max-height: 280px; overflow-y: auto;"></div>
+
+          <div class="form-group" style="margin-top: 10px;">
+            <label class="form-label" style="font-size: 0.82rem; color: #38bdf8;">كتابة معادلة LaTeX مخصصة:</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="custom-latex-input" class="form-control" style="background: #070d1e; border: 1px solid rgba(255,255,255,0.15); color: white; direction: ltr;" placeholder="e.g. \lim_{x \to 0} \frac{\sin x}{x} = 1" />
+              <button id="btn-insert-custom-stem" class="btn btn-primary"><i class="fas fa-plus"></i> إدراج</button>
+            </div>
+            <div id="custom-latex-preview" style="min-height: 48px; border: 1px dashed rgba(56,189,248,0.3); border-radius: 8px; margin-top: 8px; display: flex; align-items: center; justify-content: center; background: #070d1e;">
+              <span style="font-size: 0.85rem; color: #94a3b8;">معاينة المعادلة</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-modal-cancel">إغلاق</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clear Whiteboard Confirmation Modal -->
+    <div id="clear-confirm-modal" class="modal-overlay">
+      <div class="modal-card" style="max-width: 400px;">
+        <div class="modal-header">
+          <div class="modal-title" style="color: #f43f5e;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>تأكيد مسح السبورة</span>
+          </div>
+          <button class="modal-close btn-icon btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 0.92rem; color: #e2e8f0; line-height: 1.5;">
+            هل أنت متأكد من رغبتك في مسح كافة الرسومات والكتابات في هذه الصفحة؟
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-modal-cancel">إلغاء</button>
+          <button id="btn-confirm-clear" class="btn btn-danger"><i class="fas fa-trash-alt"></i> نعم، مسح الكل</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications Area -->
+    <div id="toast-container"></div>
+  </div>
+
+  <!-- Application Scripts -->
+  <script src="js/canvas.js"></script>
+  <script src="js/objects.js"></script>
+  <script src="js/pdf-handler.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/recorder.js"></script>
+  <script src="js/stem-library.js"></script>
+  <script src="js/widgets.js"></script>
+  <script src="js/export-manager.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
